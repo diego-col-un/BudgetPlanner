@@ -9,9 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 // importamos los metodos para el JWT
-use Tymon\JWTAuth\Contracts\JWTSubject;
+// use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable 
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -33,22 +33,22 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     // obtenemos el identificador que se almacenara en el JWT
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    // retorna un array que contiene cualquier reclamo que queramos agregar al JWT
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
-
-
-    // public function role()
+    // public function getJWTIdentifier()
     // {
-    //     return $this->belongsTo(Role::class);
+    //     return $this->getKey();
     // }
+
+    // // retorna un array que contiene cualquier reclamo que queramos agregar al JWT
+    // public function getJWTCustomClaims()
+    // {
+    //     return [];
+    // }
+
+
+    public function role()
+    {
+         return $this->belongsTo(Role::class);
+    }
 
     public function budgets()
     {
