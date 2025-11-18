@@ -69,16 +69,18 @@
             @guest
               @if (Route::has('login'))
                 <li class="nav-item">
+                  {{-- Botón de Inicio de Sesión: Outline blanco --}}
                   <a class="nav-link btn btn-outline-light px-3 me-2" href="{{ route('login') }}">
-                    <i class="bi bi-box-arrow-in-right me-1"></i> {{ __('Login') }}
+                    <i class="bi bi-box-arrow-in-right me-1"></i> {{ __('Iniciar Sesión') }}
                   </a>
                 </li>
               @endif
 
               @if (Route::has('register'))
                 <li class="nav-item">
-                  <a class="nav-link btn btn-light text-success px-3" href="{{ route('register') }}">
-                    <i class="bi bi-person-plus me-1"></i> {{ __('Register') }}
+                  {{-- Botón de Registro: Sólido verde. Mismo efecto hover pero con estilo primario. --}}
+                  <a class="nav-link btn btn-outline-light px-3 me-2" href="{{ route('register') }}">
+                    <i class="bi bi-person-plus me-1"></i> {{ __('Registrarse') }}
                   </a>
                 </li>
               @endif
@@ -107,7 +109,7 @@
                 <div class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navbarDropdown">
                   <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
-                    <i class="bi bi-box-arrow-left me-2"></i> {{ __('Logout') }}
+                    <i class="bi bi-box-arrow-left me-2"></i> {{ __('Cerrar Sesión') }}
                   </a>
 
                   <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
