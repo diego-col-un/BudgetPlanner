@@ -24,7 +24,7 @@ class StoreTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'transaction_type' => ['requiered', 'in:income,expense'],'transaction_date' => ['required','date'], 'category_id' =>['required','exists:categories,id'],'amount' => ['required','numeric','gt:0'],'description' =>['nullable','string', 'max:1000'], 
+            'transaction_type' => ['required', 'in:income,expense'],'transaction_date' => ['required','date'], 'category_id' =>['required','exists:categories,id'],'amount' => ['required','numeric','gt:0'],'description' =>['nullable','string', 'max:1000'], 
         ];
     }
 

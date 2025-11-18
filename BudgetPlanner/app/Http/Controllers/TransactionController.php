@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use App\Models\Category;
+use App\Models\Category; // ¡Bien importada!
 use App\Http\Requests\StoreTransactionRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Events\TransactionCreated;
@@ -31,8 +31,10 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        $categories = Auth::user()->categories()->get();
-        return view('transactions.create',compact('categories'));
+        // ¡ESTE ES EL CAMBIO CLAVE! 
+        // Obtenemos TODAS las categorías directamente del modelo Category.
+        $categories = Category::all();
+        return view('transactions.create', compact('categories'));
     }
 
     /**
@@ -68,8 +70,13 @@ class TransactionController extends Controller
     public function edit(Transaction $transaction)
     {
         $this->authorize('update',$transaction);
-        $categories = Auth::user()->categories()->get();
-        return view('transactions.edit', compact('transaction','catagories'));
+        
+        // ¡OTRO CAMBIO CLAVE! 
+        // Obtenemos TODAS las categorías directamente del modelo Category.
+        $categories = Category::all(); 
+        
+        // ¡OJO! Corregido el error tipográfico: 'catagories' -> 'categories'
+        return view('transactions.edit', compact('transaction', 'categories'));
     }
 
     /**

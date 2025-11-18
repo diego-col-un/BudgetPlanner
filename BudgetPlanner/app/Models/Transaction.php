@@ -2,62 +2,57 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class Transaction extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * Los atributos que se pueden asignar masivamente.
+     * Estos nombres deben coincidir con las columnas de la migración.
+     * Incluimos las FKs (user_id, category_id) y los campos de datos.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'amount',
+        'transaction_type', // <-- ¡IMPORTANTE! Coincide con la migración
+        'description',
+        'transaction_date',
+        'user_id',          // Necesario para la creación en el Controller
+        'category_id',      // Foreign Key de la categoría global
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Los atributos que deben ser casteados a tipos nativos.
      *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        // Aseguramos que transaction_date sea un objeto Date
+        'transaction_date' => 'date', 
     ];
 
-    // --- AÑADIR ESTAS RELACIONES ---
+
+    // ------------------------------------
+    // RELACIONES
+    // ------------------------------------
 
     /**
-     * Un usuario tiene muchas transacciones.
+     * Una transacción pertenece a un usuario.
      */
-    public function transactions()
+    public function user()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
-     * Un usuario tiene muchas categorías.
-     * (Asumo esta relación, la necesitas para el formulario de 'create')
+     * Una transacción pertenece a una categoría (GLOBAL).
      */
-    public function categories()
+    public function category()
     {
-        return $this->hasMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
 }
