@@ -2,6 +2,8 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -55,6 +57,11 @@
             </li>
             @endif
             @else
+
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('categories.index') }}">Categorías</a>  
+              </li>
+
             <li class="nav-item dropdown">
               <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false" v-pre>

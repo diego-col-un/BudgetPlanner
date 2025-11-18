@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\CategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,25 +14,14 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
-
-Route::middleware('auth', 'role:admin')->group(function () {
-    Route::get('/admin', function () {
-        return view('welcome');
-    });
-});
-
 Auth::routes();
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+// rutas protegidas en el cual solo se accede si el usuario haya iniciado sesion
+Route::middleware(['auth'])->group(function () {
+    Route::resource('categories', CategoryController::class);
+    Route::resource('transactions', TransactionController::class);
+});
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-Route::resource('transactions', TransactionController::class);
 
 
