@@ -10,7 +10,7 @@
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  {{-- Aquí usamos la configuración de APP_NAME del .env, si la cambiaste a "Budget Planner" --}}
+  {{-- Aquí usamos la configuración de APP_NAME del .env--}}
   <title>{{ config('app.name', 'Budget Planner') }}</title>
 
   <!-- Scripts -->
