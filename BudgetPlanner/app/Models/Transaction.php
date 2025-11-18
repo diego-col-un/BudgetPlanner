@@ -2,29 +2,62 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Transaction extends Model
+class User extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'amount',
-        'transaction_type',
-        'description',
-        'transaction_date',
-        'user_id',
-        'category_id'
+        'name',
+        'email',
+        'password',
     ];
 
-    public function user()
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    // --- AÑADIR ESTAS RELACIONES ---
+
+    /**
+     * Un usuario tiene muchas transacciones.
+     */
+    public function transactions()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(Transaction::class);
     }
 
-    public function Category()
+    /**
+     * Un usuario tiene muchas categorías.
+     * (Asumo esta relación, la necesitas para el formulario de 'create')
+     */
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasMany(Category::class);
     }
 }
