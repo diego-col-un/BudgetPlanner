@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\NotificationPreferenceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +23,10 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::middleware(['auth'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('transactions', TransactionController::class);
+
+    #Notificaciones personalizadas
+    Route::get('/profile/notifications', [NotificationPreferenceController::class, 'edit'])->name('preferences.edit');
+    Route::put('/profile/notifications', [NotificationPreferenceController::class, 'update'])->name('preferences.update');
 });
 
 

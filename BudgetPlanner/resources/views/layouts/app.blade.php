@@ -98,6 +98,14 @@
                     <i class="bi bi-currency-dollar me-1"></i> Transacciones
                 </a> 
               </li>
+
+              {{-- Enlace a Preferencias de Notificación --}}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('preferences.edit') }}">
+                    <i class="bi bi-bell me-1"></i> Notificaciones
+                </a>  
+              </li>
+              
               
               {{-- Dropdown de Usuario --}}
               <li class="nav-item dropdown">
