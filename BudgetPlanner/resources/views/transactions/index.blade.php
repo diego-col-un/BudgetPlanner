@@ -2,15 +2,46 @@
 
 @section('content')
 <div class="container py-4">
-    {{-- Encabezado y Botón de Nueva Transacción --}}
+    {{-- Encabezado y Botones --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="text-3xl font-bold text-gray-800">Mis Transacciones</h1>
-        <a href="{{ route('transactions.create') }}" class="btn btn-success shadow-sm">
-            <i class="bi bi-plus-circle me-1"></i> Nueva Transacción
-        </a>
+        
+        {{-- Grupo de botones (Lo Nuevo + Lo Tuyo) --}}
+        <div class="d-flex gap-2">
+            
+            {{-- === INICIO DE LO NUEVO: Botón Dropdown === --}}
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-share me-1"></i> Compartir
+                </button>
+                <ul class="dropdown-menu">
+                    {{-- Opción 1: PDF --}}
+                    <li>
+                        <a class="dropdown-item" href="{{ route('transactions.exportPdf') }}">
+                            <i class="bi bi-file-earmark-pdf text-danger me-2"></i> Descargar PDF
+                        </a>
+                    </li>
+                    {{-- Opción 2: Copiar Link --}}
+                    <li>
+                        <button class="dropdown-item" onclick="copyShareLink()">
+                            <i class="bi bi-link-45deg text-primary me-2"></i> Copiar Link Público
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            {{-- === FIN DE LO NUEVO === --}}
+
+            {{-- Tu botón original --}}
+            <a href="{{ route('transactions.create') }}" class="btn btn-success shadow-sm">
+                <i class="bi bi-plus-circle me-1"></i> Nueva Transacción
+            </a>
+        </div>
     </div>
 
-    {{-- Mostrar mensaje de éxito --}}
+    {{-- === LO NUEVO: Input oculto para generar el link firmado (Válido por 7 días) === --}}
+    <input type="hidden" id="shareableLink" value="{{ URL::temporarySignedRoute('transactions.shared', now()->addDays(7), ['user' => Auth::id()]) }}">
+
+    {{-- Mostrar mensaje de éxito (TU CÓDIGO ORIGINAL) --}}
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle me-2"></i>
@@ -19,7 +50,7 @@
         </div>
     @endif
 
-    {{-- Tarjeta Principal con Estilo Consistente --}}
+    {{-- Tarjeta Principal (TU CÓDIGO ORIGINAL) --}}
     <div class="card shadow bg-success bg-opacity-10">
         {{-- Encabezado de la Tarjeta --}}
         <div class="card-header bg-success text-white">
@@ -102,4 +133,20 @@
         @endif
     </div>
 </div>
+
+{{-- === LO NUEVO: Script Javascript para copiar al portapapeles === --}}
+<script>
+    function copyShareLink() {
+        // Obtenemos el input oculto
+        var copyText = document.getElementById("shareableLink");
+        
+        // Usamos la API del portapapeles moderna
+        navigator.clipboard.writeText(copyText.value).then(function() {
+            // Confirmación simple
+            alert("¡Enlace copiado! Puedes enviarlo por WhatsApp o correo.");
+        }, function(err) {
+            console.error('Error al copiar: ', err);
+        });
+    }
+</script>
 @endsection

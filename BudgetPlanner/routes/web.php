@@ -27,6 +27,15 @@ Route::middleware(['auth'])->group(function () {
     #Notificaciones personalizadas
     Route::get('/profile/notifications', [NotificationPreferenceController::class, 'edit'])->name('preferences.edit');
     Route::put('/profile/notifications', [NotificationPreferenceController::class, 'update'])->name('preferences.update');
+    Route::middleware(['auth'])->group(function () {
+    // Ruta para descargar el PDF (Solo usuario logueado)
+    Route::get('/transactions/export/pdf', [TransactionController::class, 'exportPdf'])->name('transactions.exportPdf');
+});
+
+// Ruta PÚBLICA pero FIRMADA para compartir (No requiere login, pero sí el hash válido)
+Route::get('/shared-report/{user}', [TransactionController::class, 'sharedReport'])
+    ->name('transactions.shared')
+    ->middleware('signed');
 });
 
 

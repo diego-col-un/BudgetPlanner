@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Events\TransactionCreated;
 use App\Events\TransactionUpdated;
 use App\Events\TransactionDeleted;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\URL;
 
 class TransactionController extends Controller
 {
@@ -110,5 +113,32 @@ class TransactionController extends Controller
         return redirect()->route('transactions.index')->with('success','Transaccion eliminada exitosamente');
 
 
+    }
+
+    public function exportPdf()
+    {
+        $transactions = Auth::user()->transactions()->latest('transaction_date')->get();
+        
+        // Cargamos una vista especial limpia para el PDF
+        $pdf = Pdf::loadView('transactions.pdf_view', compact('transactions'));
+        
+        return $pdf->download('mis-transacciones.pdf');
+    }
+
+    /**
+     * Mostrar reporte compartido vía Link Público Seguro.
+     * Recibimos el usuario por parámetro (inyección de modelo).
+     */
+    public function sharedReport(Request $request, User $user)
+    {
+        // Validamos que el link no haya expirado y la firma sea válida
+        if (! $request->hasValidSignature()) {
+            abort(403, 'El enlace ha expirado o no es válido.');
+        }
+
+        $transactions = $user->transactions()->latest('transaction_date')->get();
+
+        // Reutilizamos la vista del PDF pero la mostramos en el navegador
+        return view('transactions.pdf_view', compact('transactions'));
     }
 }
