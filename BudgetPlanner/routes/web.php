@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\NotificationPreferenceController;
 use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\AlertController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,6 +26,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('transactions', TransactionController::class);
     Route::resource('reminders', ReminderController::class);
+
+    Route::get('/alerts', [AlertController::class, 'index'])->name('alerts.index');
+    Route::get('/alerts/{alert}', [AlertController::class, 'show'])->name('alerts.show');
+    Route::patch('/alerts/{alert}/read', [AlertController::class, 'markAsRead'])->name('alerts.read');
 
     #Notificaciones personalizadas
     Route::get('/profile/notifications', [NotificationPreferenceController::class, 'edit'])->name('preferences.edit');

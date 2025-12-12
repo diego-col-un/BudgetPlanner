@@ -113,6 +113,29 @@
                   <i class="bi bi-alarm-fill"></i> Recordatorios
                 </a>
               </li>
+
+              
+              <li class="nav-item dropdown">
+                <a id="alertsDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-exclamation-circle-fill"></i>
+                  @php $unread = auth()->user()->alerts()->where('read', false)->count(); @endphp
+                  @if($unread)
+                    <span class="badge bg-danger">{{ $unread }}</span>
+                  @endif
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="alertsDropdown" style="min-width: 300px;">
+                  @foreach(auth()->user()->alerts()->take(6)->get() as $alert)
+                    <a href="{{ route('alerts.show', $alert) }}" class="dropdown-item {{ $alert->read ? '' : 'fw-bold' }}">
+                      <div class="small text-muted">{{ $alert->created_at->diffForHumans() }}</div>
+                      <div>{{ \Illuminate\Support\Str::limit($alert->title, 70) }}</div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                  @endforeach
+                  <a class="dropdown-item text-center" href="{{ route('alerts.index') }}">Ver todas las alertas</a>
+                </div>
+              </li>
+
               
               {{-- Dropdown de Usuario --}}
               <li class="nav-item dropdown">

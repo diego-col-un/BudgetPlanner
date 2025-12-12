@@ -63,6 +63,9 @@ class User extends Authenticatable
 {
     return $this->hasOne(NotificationPreference::class);
 }
+    public function alerts(){
+        return $this->hasMany(\App\Models\Alert::class)->orderBy('created_at', 'desc');
+    }
 }
 
 
