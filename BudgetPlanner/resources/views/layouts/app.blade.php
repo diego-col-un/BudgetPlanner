@@ -105,7 +105,14 @@
                     <i class="bi bi-bell me-1"></i> Notificaciones
                 </a>  
               </li>
-              
+
+
+              {{-- Enlace a Recordatorios --}}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('reminders.index') }}">
+                  <i class="bi bi-alarm-fill"></i> Recordatorios
+                </a>
+              </li>
               
               {{-- Dropdown de Usuario --}}
               <li class="nav-item dropdown">

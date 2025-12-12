@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use App\Models\Category; // ¡Bien importada!
+use App\Models\Category; 
 use App\Http\Requests\StoreTransactionRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Events\TransactionCreated;
